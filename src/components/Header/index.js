@@ -12,7 +12,7 @@ import { IoIosArrowDown, IoIosCart, IoIosSearch } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./style.css";
-import { login } from "../../actions";
+import { login, signout } from "../../actions";
 
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
@@ -24,6 +24,10 @@ const Header = () => {
   const userLogin = () => {
     dispatch(login({ email, password }));
   };
+
+  const logout = () => {
+    dispatch(signout());
+  }
 
   useEffect(() => {
     if(auth.authenticate) {
@@ -46,7 +50,7 @@ const Header = () => {
           { label: "Rewards", href: "", icon: null },
           { label: "Notifications", href: "", icon: null },
           { label: "Gift Cards", href: "", icon: null },
-          { label: "Logout", href: "", icon: null },
+          { label: "Logout", href: "", icon: null, onClick: logout },
         ]}
         firstMenu={
           <div className="firstmenu">
