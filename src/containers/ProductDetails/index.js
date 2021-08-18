@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "../../components/Layout";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetailsById } from "../../actions";
+import { addToCart, getProductDetailsById } from "../../actions";
 import { generatePublicUrl } from "../../urlConfig";
 import { MaterialButton } from "../../components/MaterialUI";
 import { IoIosArrowForward, IoIosStar, IoMdCart } from "react-icons/io";
@@ -59,6 +59,12 @@ const ProductDetailsPage = (props) => {
                   marginRight: "5px",
                 }}
                 icon={<IoMdCart />}
+                onClick={() => {
+                  const { _id, name, price } = product.productDetails;
+                  const img  = product.productDetails.productPictures[0].img;
+                  dispatch(addToCart({ _id, name, img, price }));
+                  props.history.push('/cart');
+                }}
               />
               <MaterialButton
                 title="BUY NOW"
