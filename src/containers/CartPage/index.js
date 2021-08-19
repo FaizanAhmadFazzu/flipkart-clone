@@ -1,36 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import CartItem from '../CartItem';
 
 import "./style.css";
+import { addToCart } from "../../actions";
 
 const CartPage = (props) => {
   const cart = useSelector((state) => state.cart);
-  const cartItems = cart.cartItems;
+  // const cartItems = cart.cartItems;
+  const [cartItems, setCartItems] = useState(cart.cartItems);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setCartItems(cart.cartItems);
+  }, [cart.cartItems])
+  console.log(cartItems);
+
+  const onQuantityIncreament = (_id, qty) => {
+    const { name, price, img } = cartItems[_id];
+    dispatch(addToCart({ _id, name, price, img }, 1))
+  }
+
+  const onQuantityDecreament = (_id, qty) => {
+    const { name, price, img } = cartItems[_id];
+    dispatch(addToCart({ _id, name, price, img }, -1))
+  }
 
   return (
     <Layout>
-      <div className="cartContainer">
+      <div className="cartContainer" style={{  alignItems: 'flex-start' }}>
         <Card headerLeft={"My Cart"} headerRight={<div>Deliver To</div>}>
           {Object.keys(cartItems).map((key, index) => (
-            <div key={index} className="flexRow">
-              <div  className="cartProductContainer">
-                <img src="" alt="" />
-              </div>
-              <div className="cartItemDetails">
-                <div>{ cartItems[key].name} - qty - {cartItems[key].qty }</div>
-                <div>Deliver in 3 - 5 days</div>
-              </div>
-            </div>
+            <CartItem 
+            key={index}
+            cartItem={cartItems[key]}
+            onQuantityInc={onQuantityIncreament}
+            onQuantityDec={onQuantityDecreament}
+            />
           ))}
         </Card>
         <Card
+          headerLeft={'Price'}
           style={{
             width: "500px",
           }}
         >
-          Price
         </Card>
       </div>
     </Layout>
