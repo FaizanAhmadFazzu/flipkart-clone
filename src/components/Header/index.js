@@ -27,10 +27,10 @@ const Header = () => {
 
   const logout = () => {
     dispatch(signout());
-  }
+  };
 
   useEffect(() => {
-    if(auth.authenticate) {
+    if (auth.authenticate) {
       setLoginModal(false);
     }
   }, [auth.authenticate]);
@@ -98,39 +98,41 @@ const Header = () => {
               <p>Get access to your Orders, Wishlist and Recommendations</p>
             </div>
             <div className="rightspace">
-              <MaterialInput
-                type="text"
-                label="Enter Email/Enter Mobile Number"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <div className="loginInputContainer">
+                <MaterialInput
+                  type="text"
+                  label="Enter Email/Enter Mobile Number"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
 
-              <MaterialInput
-                type="password"
-                label="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                // rightElement={<a href="#">Forgot?</a>}
-              />
-              <MaterialButton
-                title="Login"
-                bgColor="#fb641b"
-                textColor="#ffffff"
-                style={{
-                  margin: "40px 0 20px 0",
-                }}
-                onClick={userLogin}
-              />
-              <p>OR</p>
+                <MaterialInput
+                  type="password"
+                  label="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  // rightElement={<a href="#">Forgot?</a>}
+                />
+                <MaterialButton
+                  title="Login"
+                  bgColor="#fb641b"
+                  textColor="#ffffff"
+                  style={{
+                    margin: "40px 0 20px 0",
+                  }}
+                  onClick={userLogin}
+                />
+                <p style={{ textAlign: 'center' }}>OR</p>
 
-              <MaterialButton
-                title="Request Otp"
-                bgColor="#ffffff"
-                textColor="#2874f0"
-                style={{
-                  margin: "20px 0",
-                }}
-              />
+                <MaterialButton
+                  title="Request Otp"
+                  bgColor="#ffffff"
+                  textColor="#2874f0"
+                  style={{
+                    margin: "20px 0",
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

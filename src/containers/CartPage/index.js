@@ -6,6 +6,7 @@ import CartItem from './CartItem';
 
 import "./style.css";
 import { addToCart, getCartItems } from "../../actions";
+import { MaterialButton } from "../../components/MaterialUI";
 
 const CartPage = (props) => {
   const cart = useSelector((state) => state.cart);
@@ -39,7 +40,11 @@ const CartPage = (props) => {
   return (
     <Layout>
       <div className="cartContainer" style={{  alignItems: 'flex-start' }}>
-        <Card headerLeft={"My Cart"} headerRight={<div>Deliver To</div>}>
+        <Card 
+        headerLeft={"My Cart"} 
+        headerRight={<div>Deliver To</div>}
+        style={{width: 'calc(100% - 400px)', overflow: 'hidden'}}
+        >
           {Object.keys(cartItems).map((key, index) => (
             <CartItem 
             key={index}
@@ -48,11 +53,29 @@ const CartPage = (props) => {
             onQuantityDec={onQuantityDecreament}
             />
           ))}
+          <div style={{
+            width: '100%',
+            display: 'flex',
+            background: '#ffffff',
+            justifyContent: 'flex-end',
+            boxShadow: '0 0 10x 10px #eee',
+            padding: '10px 0',
+            boxSizing: 'border-box'
+          }}>
+            <div
+            style={{ width: '250px'}}
+            >
+              <MaterialButton 
+              title='Place Order'
+              onClick={() => props.history.push('/checkout')}
+              />
+            </div>
+          </div>
         </Card>
         <Card
           headerLeft={'Price'}
           style={{
-            width: "500px",
+            width: "380px",
           }}
         >
         </Card>

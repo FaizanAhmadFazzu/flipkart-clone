@@ -44,6 +44,7 @@ const DropdownMenu = (props) => {
 
 const MaterialInput = (props) => {
   const [focus, setFocus] = useState(false);
+  const [touch, setTouch] = useState(false);
 
   return (
       <div className="materialInput">
@@ -59,11 +60,14 @@ const MaterialInput = (props) => {
                   value={props.value}
                   onChange={props.onChange}
                   onFocus={(e) => {
-                      setFocus(true)
+                      setFocus(true);
+                      setTouch(true);
                   }}
                   onBlur={(e) => {
                       if(e.target.value === ""){
                           setFocus(false)
+                      } else {
+                        setTouch(false);
                       }
                   }} />
               {
@@ -80,12 +84,13 @@ const MaterialButton = (props) => {
     props.onClick && props.onClick();
   }
   return (
-      <div style={{ width: '90%', ...props.style }}>
+      <div style={{ width: '100%', ...props.style }}>
           <button
               className="materialButton"
               style={{ 
                 backgroundColor: props.bgColor,
-                color: props.textColor
+                color: props.textColor,
+                fontSize: props.fontSize,
                }}
                onClick={onClick}
           >
