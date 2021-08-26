@@ -102,10 +102,17 @@ const MaterialButton = (props) => {
   )
 }
 
+const Anchor = (props) => {
+  return (
+    <button {...props} className="anchorButton">{props.name}</button>
+  )
+}
+
 
 export { 
     Modal,
     DropdownMenu,
     MaterialInput,
-    MaterialButton
+    MaterialButton,
+    Anchor
  };
