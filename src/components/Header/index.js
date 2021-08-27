@@ -122,7 +122,7 @@ const Header = () => {
                   }}
                   onClick={userLogin}
                 />
-                <p style={{ textAlign: 'center' }}>OR</p>
+                <p style={{ textAlign: "center" }}>OR</p>
 
                 <MaterialButton
                   title="Request Otp"
@@ -193,7 +193,7 @@ const Header = () => {
             ]}
           />
           <div>
-            <a className="cart">
+            <a href={"/cart"} className="cart">
               <IoIosCart />
               <span style={{ margin: "0 10px" }}>Cart</span>
             </a>

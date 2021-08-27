@@ -20,11 +20,10 @@ const CartPage = (props) => {
   useEffect(() => {
     setCartItems(cart.cartItems);
   }, [cart.cartItems]);
-  console.log(cartItems);
 
   useEffect(() => {
     if (auth.authenticate) {
-      getCartItems();
+      dispatch(getCartItems());
     }
   }, [auth.authenticate]);
 
@@ -37,6 +36,21 @@ const CartPage = (props) => {
     const { name, price, img } = cartItems[_id];
     dispatch(addToCart({ _id, name, price, img }, -1));
   };
+
+  if (props.onlyCartItems) {
+    return (
+      <>
+        {Object.keys(cartItems).map((key, index) => (
+          <CartItem
+            key={index}
+            cartItem={cartItems[key]}
+            onQuantityInc={onQuantityIncreament}
+            onQuantityDec={onQuantityDecreament}
+          />
+        ))}
+      </>
+    );
+  }
 
   return (
     <Layout>
