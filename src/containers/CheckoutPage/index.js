@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAddress, getCartItems } from "../../actions";
+import { addOrder, getAddress, getCartItems } from "../../actions";
 import Layout from "../../components/Layout";
 import {
   Anchor,
@@ -11,6 +11,7 @@ import AddressForm from "./AddressForm";
 import PriceDetails from "../../components/PriceDetails";
 import "./style.css";
 import CartPage from "../CartPage";
+import Card from "../../components/UI/Card";
 
 const CheckoutStep = (props) => {
   return (
@@ -97,6 +98,9 @@ export const CheckoutPage = (props) => {
   const [confirmAddress, setConfirmAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [orderSummary, setOrderSummary] = useState(false);
+  const [orderConfirmation, setOrderConfirmation] = useState(false);
+  const [paymentOption, setPaymentOption] = useState(false);
+  const [confirmOrder, setConfirmOrder] = useState(false);
   const cart = useSelector((state) => state.cart);
 
   const onAddressSubmit = (addr) => {
@@ -143,6 +147,49 @@ export const CheckoutPage = (props) => {
     setOrderSummary(true);
   };
 
+  const userOrderConfirmation = () => {
+    setOrderConfirmation(true);
+    setOrderSummary(false);
+    setPaymentOption(true);
+  };
+
+  const onConfirmOrder = () => {
+    const totalAmount = Object.keys(cart.cartItems).reduce(function (
+      totalPrice,
+      key
+    ) {
+      const { price, qty } = cart.cartItems[key];
+      return totalPrice + price * qty;
+    },
+    0);
+    const items = Object.keys(cart.cartItems).map((key) => {
+      return {
+        productId: key,
+        payablePrice: cart.cartItems[key].price,
+        purchaseQty: cart.cartItems[key].qty,
+      };
+    });
+    const payload = {
+      addressId: selectedAddress._id,
+      totalAmount,
+      items,
+      paymentStatus: "pending",
+    };
+    console.log("add Order", payload);
+    dispatch(addOrder(payload));
+    setConfirmOrder(true);
+  };
+
+  if (confirmOrder) {
+    return (
+      <Layout>
+        <Card>
+          <div>Thank you</div>
+        </Card>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="cartContainer" style={{ alignItems: "flex-start" }}>
@@ -171,7 +218,7 @@ export const CheckoutPage = (props) => {
             body={
               <>
                 {confirmAddress ? (
-                  <div>{`${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
+                  <div className="stepCompleted">{`${selectedAddress.name} ${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
                 ) : (
                   address.map((adr) => (
                     <Address
@@ -204,12 +251,71 @@ export const CheckoutPage = (props) => {
             stepNumber={"3"}
             title={"ORDER SUMMARY"}
             active={orderSummary}
-            body={orderSummary ? <CartPage onlyCartItems={true} /> : null }
+            body={
+              orderSummary ? (
+                <CartPage onlyCartItems={true} />
+              ) : orderConfirmation ? (
+                <div className="stepCompleted">
+                  {Object.keys(cart.cartItems).length} items
+                </div>
+              ) : null
+            }
           />
+          {orderSummary && (
+            <Card
+              style={{
+                margin: "10px 0",
+              }}
+            >
+              <div
+                className="flexRow sb"
+                style={{
+                  padding: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ fontSize: "12px" }}>
+                  Order Confirmation email will be sent to{" "}
+                  <strong>{auth.user.email}</strong>
+                </p>
+                <MaterialButton
+                  title={"CONTINUE"}
+                  style={{
+                    width: "200px",
+                  }}
+                  onClick={userOrderConfirmation}
+                />
+              </div>
+            </Card>
+          )}
           <CheckoutStep
             stepNumber={"4"}
             title={"PAYMENT OPTIONS"}
-            active={false}
+            active={paymentOption}
+            body={
+              paymentOption && (
+                <div>
+                  <div
+                    className="flexRow"
+                    style={{
+                      alignItems: "center",
+                      padding: "20px",
+                    }}
+                  >
+                    <input type="radio" name="paymentOption" value="cod" />
+                    <div>Cash on delivery</div>
+                  </div>
+                  <MaterialButton
+                    title={"CONFIRM ORDER"}
+                    onClick={onConfirmOrder}
+                    style={{
+                      width: "200px",
+                      margin: "0 0 20px 20px",
+                    }}
+                  />
+                </div>
+              )
+            }
           />
         </div>
 
