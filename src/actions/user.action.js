@@ -1,5 +1,5 @@
 import axios from "../helpers/axios";
-import { userConstants } from "./constants";
+import { cartConstants, userConstants } from "./constants";
 
 export const getAddress = () => {
   return async (dispatch) => {
@@ -57,22 +57,41 @@ export const addOrder = (payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.post("/addOrder", payload);
-      dispatch({ type: userConstants.ADD_USER_ADDRESS_REQUEST });
+      dispatch({ type: userConstants.ADD_USER_ORDER_REQUEST });
       if (res.status === 201) {
         console.log(res);
-        // const {
-        //   address: { address },
-        // } = res.data;
-        // dispatch({
-        //   type: userConstants.ADD_USER_ADDRESS_SUCCESS,
-        //   payload: { address },
-        // });
+        dispatch({ type: cartConstants.RESET_CART });
       } else {
         const { error } = res.data;
-        // dispatch({
-        //   type: userConstants.ADD_USER_ADDRESS_FAILURE,
-        //   payload: { error },
-        // });
+        dispatch({
+          type: userConstants.ADD_USER_ORDER_FAILURE,
+          payload: { error },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getOrders = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getOrders");
+      dispatch({ type: userConstants.GET_USER_ORDER_REQUEST });
+      if (res.status === 200) {
+        console.log(res);
+        const { orders } = res.data;
+        dispatch({
+          type: userConstants.GET_USER_ORDER_SUCCESS,
+          payload: { orders },
+        });
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userConstants.GET_USER_ORDER_FAILURE,
+          payload: { error },
+        });
       }
     } catch (error) {
       console.log(error);

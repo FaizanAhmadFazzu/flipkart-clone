@@ -1,0 +1,5 @@
+.orderItemContainer{
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+}
