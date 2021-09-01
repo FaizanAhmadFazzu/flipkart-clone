@@ -35,8 +35,10 @@ const DropdownMenu = (props) => {
                 <li key={index}>
                   <a
                     onClick={(e) => {
-                      e.preventDefault();
-                      item.onClick && item.onClick();
+                      if(item.onClick){
+                        e.preventDefault();
+                        item.onClick && item.onClick();
+                      }
                     }}
                     href={`${item.href}`}
                   >
@@ -135,4 +137,21 @@ const Anchor = (props) => {
   );
 };
 
-export { Modal, DropdownMenu, MaterialInput, MaterialButton, Anchor };
+const Breed = (props) => {
+  return (
+    <div className="breed">
+      <ul>
+        {
+          props.breed && props.breed.map((item, index) => (
+            <li key={index}>
+              <a href={item.href}>{item.name}</a>
+              {props.breedIcon}
+            </li>
+          ) )
+        }
+      </ul>
+    </div>
+  )
+}
+
+export { Modal, DropdownMenu, MaterialInput, MaterialButton, Anchor, Breed };

@@ -24,7 +24,7 @@ export const getProductPage = (payload) => {
       const res = await axios.get(`/page/${cid}/${type}`);
       dispatch({ type: productConstants.GET_PRODUCT_PAGE_REQUEST });
       if (res.status == 200) {
-          console.log(res.data)
+        console.log(res.data);
         const { page } = res.data;
         dispatch({
           type: productConstants.GET_PRODUCT_PAGE_SUCCESS,
@@ -38,13 +38,13 @@ export const getProductPage = (payload) => {
         });
       }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
   };
 };
 
-export const  getProductDetailsById = (payload) => {
-  return async dispath => {
+export const getProductDetailsById = (payload) => {
+  return async (dispath) => {
     dispath({ type: productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST });
     let res;
     try {
@@ -53,14 +53,14 @@ export const  getProductDetailsById = (payload) => {
       console.log(res);
       dispath({
         type: productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS,
-        payload: { productDetails: res.data.product }
-      })
+        payload: { productDetails: res.data.product },
+      });
     } catch (error) {
       console.log(error);
       dispath({
         type: productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE,
-        payload: { error: res.data.error }
-      })
+        payload: { error: res.data.error },
+      });
     }
-  }
-}
+  };
+};
