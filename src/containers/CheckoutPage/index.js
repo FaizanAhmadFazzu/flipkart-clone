@@ -174,6 +174,7 @@ export const CheckoutPage = (props) => {
       totalAmount,
       items,
       paymentStatus: "pending",
+      paymentType: "cod",
     };
     console.log("add Order", payload);
     dispatch(addOrder(payload));
