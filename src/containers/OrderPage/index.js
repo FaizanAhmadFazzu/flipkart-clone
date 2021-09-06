@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
 import "./style.css";
@@ -28,29 +29,24 @@ const OrderPage = (props) => {
         {user.orders.map((order) => {
           return order.items.map((item) => (
             <Card style={{ display: "block", margin: "5px 0" }}>
-              <div className="orderItemContainer">
-                <div
-                  className="orderImgContainer"
-                >
+              <Link
+                to={`/order_details/${order._id}`}
+                className="orderItemContainer"
+              >
+                <div className="orderImgContainer">
                   <img
-                   className="orderImg"
+                    className="orderImg"
                     src={generatePublicUrl(
                       item.productId.productPictures[0].img
                     )}
                   />
                 </div>
-                <div
-                  className="orderRow"
-                >
-                  <div
-                    className="orderName"
-                  >
-                    {item.productId.name}
-                  </div>
+                <div className="orderRow">
+                  <div className="orderName">{item.productId.name}</div>
                   <div className="orderPrice">{item.payablePrice}</div>
                   <div>{order.paymentStatus}</div>
                 </div>
-              </div>
+              </Link>
             </Card>
           ));
         })}

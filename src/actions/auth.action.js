@@ -1,79 +1,92 @@
 import axios from "../helpers/axios";
-import { authConstants, cartConstants } from "./constants"
+import { authConstants, cartConstants } from "./constants";
+
+// signup action
+export const signup = (user) => {
+  return async (dispatch) => {
+    let res;
+    try {
+      dispatch({ type: authConstants.SIGNUP_REQUEST });
+      res = await axios.post("/signup", user);
+      if (res.status === 201) {
+        console.log(res);
+      }
+    } catch (error) {}
+  };
+};
 
 export const login = (user) => {
+  console.log(user);
+  return async (dispatch) => {
+    dispatch({ type: authConstants.LOGIN_REQUEST });
+    const res = await axios.post("/signin", {
+      ...user,
+    });
 
-    console.log(user);
-    return async (dispatch) => {
-
-        dispatch({ type: authConstants.LOGIN_REQUEST });
-        const res = await axios.post('/signin', {
-            ...user
-        })
-
-        if (res.status === 200) {
-            const { token, user } =  res.data;
-            localStorage.setItem('token', token)
-            localStorage.setItem('user', JSON.stringify(user));
-            dispatch({
-                type: authConstants.LOGIN_SUCCESS,
-                payload: {
-                    token, user
-                }
-            });
-        } else {
-            if (res.status === 400) {
-                dispatch({
-                    type: authConstants.LOGIN_FAILURE,
-                    payload: { error: res.data.error }
-                });
-            }
-        }
-
+    if (res.status === 200) {
+      const { token, user } = res.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      dispatch({
+        type: authConstants.LOGIN_SUCCESS,
+        payload: {
+          token,
+          user,
+        },
+      });
+    } else {
+      if (res.status === 400) {
+        dispatch({
+          type: authConstants.LOGIN_FAILURE,
+          payload: { error: res.data.error },
+        });
+      }
     }
-}
+  };
+};
 
 export const isUserLoggedIn = () => {
-    return async (dispatch) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const user = JSON.parse(localStorage.getItem('user'));
-            dispatch({
-                type: authConstants.LOGIN_SUCCESS,
-                payload: {
-                    token, user
-                }
-            });
-        } else {
-            dispatch({
-                type: authConstants.LOGIN_FAILURE,
-                payload: { error: 'Failed to Login' }
-            });
-        }
+  return async (dispatch) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = JSON.parse(localStorage.getItem("user"));
+      dispatch({
+        type: authConstants.LOGIN_SUCCESS,
+        payload: {
+          token,
+          user,
+        },
+      });
+    } else {
+      dispatch({
+        type: authConstants.LOGIN_FAILURE,
+        payload: { error: "Failed to Login" },
+      });
     }
-}
+  };
+};
 
 export const signout = () => {
-    return async dispatch => {
-        dispatch({
-            type: authConstants.LOGOUT_REQUEST
-        });
-        // localStorage.removeItem('user');
-        // localStorage.removeItem('token');
-        localStorage.clear();
-        dispatch({ type: authConstants.LOGOUT_SUCCESS });
-        dispatch({ type: cartConstants.RESET_CART });
-        // const res = await axios.post(`/admin/signout`);
-        // if(res.status === 200) {
-        //     localStorage.clear();
-        //     dispatch({
-        //         type: authConstants.LOGOUT_SUCCESS
-        //     })
-        // } else {
-        //     dispatch({
-        //         type: authConstants.LOGOUT_FAILURE,
-        //         payload: { error: 'error' }
-        //     })
-        // }
-    }
-}
+  return async (dispatch) => {
+    dispatch({
+      type: authConstants.LOGOUT_REQUEST,
+    });
+    // localStorage.removeItem('user');
+    // localStorage.removeItem('token');
+    localStorage.clear();
+    dispatch({ type: authConstants.LOGOUT_SUCCESS });
+    dispatch({ type: cartConstants.RESET_CART });
+    // const res = await axios.post(`/admin/signout`);
+    // if(res.status === 200) {
+    //     localStorage.clear();
+    //     dispatch({
+    //         type: authConstants.LOGOUT_SUCCESS
+    //     })
+    // } else {
+    //     dispatch({
+    //         type: authConstants.LOGOUT_FAILURE,
+    //         payload: { error: 'error' }
+    //     })
+    // }
+  };
+};

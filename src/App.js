@@ -11,6 +11,7 @@ import ProductDetailsPage from "./containers/ProductDetails";
 import CartPage from "./containers/CartPage";
 import CheckoutPage from "./containers/CheckoutPage";
 import OrderPage from "./containers/OrderPage";
+import OrderDetailsPage from "./containers/OrderDetailsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,9 +30,10 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/cart" exact component={CartPage} />
-          <Route path="/checkout" exact component={CheckoutPage} />
-          <Route path="/account/orders" exact component={OrderPage} />
+          <Route path="/cart" component={CartPage} />
+          <Route path="/checkout" component={CheckoutPage} />
+          <Route path="/account/orders" component={OrderPage} />
+          <Route path="/order_details/:orderId" component={OrderDetailsPage} />
           <Route
             path="/:productSlug/:productId/p"
             component={ProductDetailsPage}

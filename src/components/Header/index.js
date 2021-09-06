@@ -12,17 +12,32 @@ import { IoIosArrowDown, IoIosCart, IoIosSearch } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./style.css";
-import { login, signout } from "../../actions";
+import { login, signout, signup, signup as _signup } from "../../actions";
 
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
+  const [signup, setSignup] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
+  const userSignup = () => {
+    const user = { firstName, lastName, email, password };
+    if (firstName === "" || lastName === "" || email === "" || password === "")
+      return;
+    dispatch(_signup(user));
+  };
+
   const userLogin = () => {
-    dispatch(login({ email, password }));
+    if (signup) {
+      userSignup();
+    } else {
+      dispatch(login({ email, password }));
+    }
   };
 
   const logout = () => {
@@ -70,7 +85,13 @@ const Header = () => {
     return (
       <DropdownMenu
         menu={
-          <a className="loginButton" onClick={() => setLoginModal(true)}>
+          <a
+            className="loginButton"
+            onClick={() => {
+              setSignup(false);
+              setLoginModal(true);
+            }}
+          >
             Login
           </a>
         }
@@ -91,7 +112,15 @@ const Header = () => {
         firstMenu={
           <div className="firstmenu">
             <span>New Customer?</span>
-            <a style={{ color: "#2874f0" }}>Sign Up</a>
+            <a
+              onClick={() => {
+                setSignup(true);
+                setLoginModal(true);
+              }}
+              style={{ color: "#2874f0" }}
+            >
+              Sign Up
+            </a>
           </div>
         }
       />
@@ -109,6 +138,23 @@ const Header = () => {
             </div>
             <div className="rightspace">
               <div className="loginInputContainer">
+                {signup && (
+                  <MaterialInput
+                    type="text"
+                    label="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                )}
+
+                {signup && (
+                  <MaterialInput
+                    type="text"
+                    label="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                )}
                 <MaterialInput
                   type="text"
                   label="Enter Email/Enter Mobile Number"
@@ -124,7 +170,7 @@ const Header = () => {
                   // rightElement={<a href="#">Forgot?</a>}
                 />
                 <MaterialButton
-                  title="Login"
+                  title={signup ? "Register" : "Login"}
                   bgColor="#fb641b"
                   textColor="#ffffff"
                   style={{
