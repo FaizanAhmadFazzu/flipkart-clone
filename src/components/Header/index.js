@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./style.css";
 import { login, signout, signup, signup as _signup } from "../../actions";
+import Cart from "../UI/Cart";
 
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
@@ -24,6 +25,8 @@ const Header = () => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  // state cart value
+  const cart = useSelector((state) => state.cart);
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };
@@ -250,7 +253,7 @@ const Header = () => {
           />
           <div>
             <a href={"/cart"} className="cart">
-              <IoIosCart />
+              <Cart count={Object.keys(cart.cartItems).length} />
               <span style={{ margin: "0 10px" }}>Cart</span>
             </a>
           </div>

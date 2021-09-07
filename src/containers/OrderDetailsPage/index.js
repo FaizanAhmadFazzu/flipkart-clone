@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrder } from "../../actions";
 import Layout from "../../components/Layout";
-import Price from "../../components/Price";
+import Price from "../../components/UI/Price";
 import Card from "../../components/UI/Card";
 import { generatePublicUrl } from "../../urlConfig";
 import "./style.css";
@@ -125,7 +125,8 @@ const OrderDetailsPage = (props) => {
             </div>
 
             <div style={{ fontWeight: 500, fontSize: 14 }}>
-                {orderDetails.orderStatus[3].isCompleted && `Delivered on ${formatDate2(orderDetails.orderStatus[3].date)}`}
+              {orderDetails.orderStatus[3].isCompleted &&
+                `Delivered on ${formatDate2(orderDetails.orderStatus[3].date)}`}
             </div>
           </Card>
         ))}
