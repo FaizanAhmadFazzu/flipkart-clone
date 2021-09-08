@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 const Modal = (props) => {
   if (!props.visible) {
@@ -35,7 +36,7 @@ const DropdownMenu = (props) => {
                 <li key={index}>
                   <a
                     onClick={(e) => {
-                      if(item.onClick){
+                      if (item.onClick) {
                         e.preventDefault();
                         item.onClick && item.onClick();
                       }
@@ -141,17 +142,16 @@ const Breed = (props) => {
   return (
     <div className="breed">
       <ul>
-        {
-          props.breed && props.breed.map((item, index) => (
+        {props.breed &&
+          props.breed.map((item, index) => (
             <li key={index}>
-              <a href={item.href}>{item.name}</a>
+              <Link to={item.href}>{item.name}</Link>
               {props.breedIcon}
             </li>
-          ) )
-        }
+          ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export { Modal, DropdownMenu, MaterialInput, MaterialButton, Anchor, Breed };

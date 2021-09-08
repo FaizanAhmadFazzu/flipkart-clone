@@ -5,6 +5,7 @@ import {
   MaterialInput,
   MaterialButton,
 } from "../MaterialUI";
+import { Link } from 'react-router-dom'
 
 import flipkartLogo from "../../images/logo/flipkart.png";
 import goldenStar from "../../images/logo/golden-star.png";
@@ -141,6 +142,9 @@ const Header = () => {
             </div>
             <div className="rightspace">
               <div className="loginInputContainer">
+                {
+                  auth.error && <div style={{ color: "red", fontSize: 12 }}>{auth.error}</div>
+                }
                 {signup && (
                   <MaterialInput
                     type="text"
@@ -252,10 +256,10 @@ const Header = () => {
             ]}
           />
           <div>
-            <a href={"/cart"} className="cart">
+            <Link to={"/cart"} className="cart">
               <Cart count={Object.keys(cart.cartItems).length} />
               <span style={{ margin: "0 10px" }}>Cart</span>
-            </a>
+            </Link>
           </div>
         </div>
         {/* right side menu ends here */}

@@ -138,7 +138,6 @@ export const CheckoutPage = (props) => {
       adr._id === addr._id ? { ...adr, edit: true } : { ...adr, edit: false }
     );
     setAddress(updatedAddress);
-    console.log("Updated Address", updatedAddress);
   };
 
   const confirmDeliveryAddress = (addr) => {
@@ -176,20 +175,15 @@ export const CheckoutPage = (props) => {
       paymentStatus: "pending",
       paymentType: "cod",
     };
-    console.log("add Order", payload);
     dispatch(addOrder(payload));
     setConfirmOrder(true);
   };
 
-  if (confirmOrder) {
-    return (
-      <Layout>
-        <Card>
-          <div>Thank you</div>
-        </Card>
-      </Layout>
-    );
-  }
+  useEffect(() => {
+    if (confirmOrder && user.placedOrderId) {
+      props.history.push(`order_details/${user.placedOrderId}`);
+    }
+  }, [user.placedOrderId]);
 
   return (
     <Layout>
